@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Swords, Shield, Wand2, ArrowLeft } from "lucide-react";
+import { Swords, Shield, Wand2, ArrowLeft, Wallet } from "lucide-react";
 import { GameButton } from "@/components/GameButton";
 import { GameCard } from "@/components/GameCard";
 import { StatBar } from "@/components/StatBar";
+import { useGame } from "@/context/GameContext";
 import charWarrior from "@/assets/char-warrior.jpg";
 import charMage from "@/assets/char-mage.jpg";
 import charRanger from "@/assets/char-ranger.jpg";
@@ -39,12 +40,30 @@ const classes = [
 export default function Lobby() {
   const [selected, setSelected] = useState<string | null>(null);
   const [charName, setCharName] = useState("");
+  const [minting, setMinting] = useState(false);
   const navigate = useNavigate();
+  const { wallet, connectWallet, createCharacter } = useGame();
   const selectedClass = classes.find((c) => c.id === selected);
+
+  const handleCreate = () => {
+    if (!selectedClass || !charName.trim()) return;
+    setMinting(true);
+    // Simulate NFT mint delay
+    setTimeout(() => {
+      createCharacter({
+        name: charName.trim(),
+        classId: selectedClass.id,
+        className: selectedClass.name,
+        level: 1,
+        stats: selectedClass.stats,
+      });
+      setMinting(false);
+      navigate("/dashboard");
+    }, 1500);
+  };
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
-      {/* Header */}
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center gap-4 mb-8">
           <GameButton variant="outline" size="sm" onClick={() => navigate("/")}>
@@ -55,6 +74,23 @@ export default function Lobby() {
           </h1>
         </div>
 
+        {/* Wallet requirement notice */}
+        {!wallet && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="gradient-card border border-gold/30 rounded-lg p-4 mb-6 text-center"
+          >
+            <p className="text-foreground font-crimson mb-3">
+              <Wallet className="w-5 h-5 inline mr-2 text-gold" />
+              Connect your wallet to mint your character as an NFT on Base
+            </p>
+            <GameButton variant="gold" size="sm" onClick={connectWallet}>
+              <Wallet className="w-4 h-4 mr-1 inline" /> Connect Wallet
+            </GameButton>
+          </motion.div>
+        )}
+
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
           {classes.map((cls) => (
             <GameCard
@@ -64,11 +100,7 @@ export default function Lobby() {
               className="text-center"
             >
               <div className="w-full aspect-square rounded-md overflow-hidden mb-4">
-                <img
-                  src={cls.img}
-                  alt={cls.name}
-                  className="w-full h-full object-cover"
-                />
+                <img src={cls.img} alt={cls.name} className="w-full h-full object-cover" />
               </div>
               <cls.icon className="w-6 h-6 text-gold mx-auto mb-2" />
               <h3 className="font-cinzel text-xl font-semibold text-foreground mb-1">{cls.name}</h3>
@@ -77,7 +109,6 @@ export default function Lobby() {
           ))}
         </div>
 
-        {/* Selected class details */}
         <AnimatePresence>
           {selectedClass && (
             <motion.div
@@ -111,11 +142,17 @@ export default function Lobby() {
                 variant="gold"
                 size="lg"
                 className="w-full"
-                onClick={() => navigate("/dashboard")}
-                disabled={!charName.trim()}
+                onClick={handleCreate}
+                disabled={!charName.trim() || minting}
               >
-                ⚔️ Create Character (Mint NFT)
+                {minting ? "⏳ Minting NFT on Base..." : "⚔️ Create Character (Mint NFT)"}
               </GameButton>
+
+              {!wallet && (
+                <p className="text-xs text-muted-foreground font-crimson text-center mt-2">
+                  Wallet not connected — character will be saved locally
+                </p>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
