@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { GameProvider } from "@/context/GameContext";
 import { WalletBar } from "@/components/WalletBar";
+import { useFarcasterSDK } from "@/hooks/use-farcaster-sdk";
 import Landing from "./pages/Landing";
 import Lobby from "./pages/Lobby";
 import WorldMap from "./pages/WorldMap";
@@ -14,23 +15,31 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const AppContent = () => {
+  useFarcasterSDK();
+
+  return (
+    <BrowserRouter>
+      <WalletBar />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/lobby" element={<Lobby />} />
+        <Route path="/map" element={<WorldMap />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/battle" element={<Battle />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <GameProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
-          <WalletBar />
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/lobby" element={<Lobby />} />
-            <Route path="/map" element={<WorldMap />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/battle" element={<Battle />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <AppContent />
       </GameProvider>
     </TooltipProvider>
   </QueryClientProvider>
