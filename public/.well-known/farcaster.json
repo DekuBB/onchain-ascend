@@ -9,12 +9,12 @@
     "name": "Crypto Realm",
     "subtitle": "On-Chain MMO RPG on Base",
     "description": "Explore, fight, craft, and earn in a fully decentralized medieval MMO RPG built on Base & Farcaster.",
-    "iconUrl": "https://crypto-albion-x-runescape-x-farcaster.lovable.app/favicon.ico",
-    "splashImageUrl": "https://crypto-albion-x-runescape-x-farcaster.lovable.app/placeholder.svg",
+    "iconUrl": "https://onchain-ascend.vercel.app/favicon.ico",
+    "splashImageUrl": "https://onchain-ascend.vercel.app/placeholder.svg",
     "splashBackgroundColor": "#0a0a0f",
     "homeUrl": "https://onchain-ascend.vercel.app",
     "longDescription": "Crypto Realm is an on-chain MMO lite game inspired by Albion Online and RuneScape. Built on Base blockchain and Farcaster, it combines RPG gameplay with token rewards ($REALM ERC-20), NFT characters (ERC-721), and NFT items (ERC-1155). Features include PvE battles, world bosses, guilds, and seasonal events.",
     "requiredChains": ["eip155:8453"],
-    "imageUrl": "https://crypto-albion-x-runescape-x-farcaster.lovable.app/placeholder.svg"
+    "imageUrl": "https://onchain-ascend.vercel.app/placeholder.svg"
   }
 }
