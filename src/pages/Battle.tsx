@@ -5,7 +5,7 @@ import { Swords, ArrowLeft, Skull, Trophy, Coins, Shield, Star } from "lucide-re
 import { GameButton } from "@/components/GameButton";
 import { StatBar } from "@/components/StatBar";
 import { useGame, InventoryItem } from "@/context/GameContext";
-import { SFX } from "@/lib/audio";
+import { SFX, playBattleMusic, stopAllMusic } from "@/lib/audio";
 
 interface Combatant {
   name: string;
@@ -97,8 +97,17 @@ export default function Battle() {
     setIsPlayerTurn(true);
     setDefending(false);
     setPhase("fighting");
+    playBattleMusic();
     SFX.click();
   };
+
+  // Stop battle music on victory/defeat/unmount
+  useEffect(() => {
+    if (phase === "victory" || phase === "defeat") {
+      stopAllMusic();
+    }
+    return () => { stopAllMusic(); };
+  }, [phase]);
 
   const addLog = useCallback((msg: string) => {
     setLog((prev) => [...prev.slice(-8), msg]);
