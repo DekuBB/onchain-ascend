@@ -55,6 +55,8 @@ export default function Lobby() {
         classId: selectedClass.id,
         className: selectedClass.name,
         level: 1,
+        xp: 0,
+        xpToNext: 100,
         stats: selectedClass.stats,
       });
       setMinting(false);

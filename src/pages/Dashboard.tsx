@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Coins, Swords, Shield, Map, Users, Trophy, ArrowLeft, Flame } from "lucide-react";
+import { Coins, Swords, Shield, Map, Users, Trophy, ArrowLeft, Flame, Star } from "lucide-react";
 import { GameButton } from "@/components/GameButton";
 import { GameCard } from "@/components/GameCard";
 import { StatBar } from "@/components/StatBar";
@@ -15,15 +15,9 @@ const classImages: Record<string, string> = {
   ranger: charRanger,
 };
 
-const inventory = [
-  { name: "Iron Sword", rarity: "Common", qty: 1 },
-  { name: "Mana Potion", rarity: "Common", qty: 5 },
-  { name: "Dragon Scale", rarity: "Rare", qty: 1 },
-  { name: "Shadow Cloak", rarity: "Epic", qty: 1 },
-];
-
 const rarityColor: Record<string, string> = {
   Common: "text-muted-foreground",
+  Uncommon: "text-emerald",
   Rare: "text-gold",
   Epic: "text-arcane",
   Legendary: "text-crimson",
@@ -31,7 +25,7 @@ const rarityColor: Record<string, string> = {
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { character, realmTokens } = useGame();
+  const { character, realmTokens, inventory } = useGame();
 
   if (!character) {
     return (
@@ -45,6 +39,7 @@ export default function Dashboard() {
   }
 
   const charImg = classImages[character.classId] || charWarrior;
+  const xpPercent = Math.floor((character.xp / character.xpToNext) * 100);
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
@@ -65,7 +60,22 @@ export default function Dashboard() {
               </div>
               <h2 className="font-cinzel text-xl font-bold text-foreground">{character.name}</h2>
               <p className="text-gold text-sm font-crimson mb-1">Level {character.level} {character.className}</p>
-              <p className="text-muted-foreground text-xs font-crimson mb-4">Base Chain</p>
+              <p className="text-muted-foreground text-xs font-crimson mb-2">Base Chain</p>
+              {/* XP Bar */}
+              <div className="mb-4">
+                <div className="flex justify-between text-xs font-crimson text-muted-foreground mb-1">
+                  <span className="flex items-center gap-1"><Star className="w-3 h-3 text-arcane" /> XP</span>
+                  <span>{character.xp} / {character.xpToNext}</span>
+                </div>
+                <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-arcane rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${xpPercent}%` }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </div>
+              </div>
             </div>
             <div className="space-y-3">
               <StatBar label="STR" value={character.stats.str} max={100} color="crimson" />
@@ -88,12 +98,10 @@ export default function Dashboard() {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">NFT Items</span>
-                <span className="text-foreground">1</span>
+                <span className="text-foreground">{inventory.length}</span>
               </div>
             </div>
-            <GameButton variant="gold" size="sm" className="w-full mt-4">
-              Claim Rewards
-            </GameButton>
+            <GameButton variant="gold" size="sm" className="w-full mt-4">Claim Rewards</GameButton>
           </GameCard>
 
           {/* World Boss */}
@@ -102,16 +110,12 @@ export default function Dashboard() {
               <Flame className="w-6 h-6 text-arcane animate-pulse-gold" />
               <h3 className="font-cinzel font-semibold text-foreground">World Boss Event</h3>
             </div>
-            <p className="text-muted-foreground text-sm font-crimson mb-2">
-              🐉 Ancient Dragon — spawns in 2h 14m
-            </p>
+            <p className="text-muted-foreground text-sm font-crimson mb-2">🐉 Ancient Dragon — spawns in 2h 14m</p>
             <div className="text-xs text-muted-foreground font-crimson space-y-1">
               <div>Reward: 500 $REALM + Legendary NFT</div>
               <div>Players signed up: 142</div>
             </div>
-            <GameButton variant="crimson" size="sm" className="w-full mt-4" onClick={() => navigate("/battle")}>
-              Join Battle
-            </GameButton>
+            <GameButton variant="crimson" size="sm" className="w-full mt-4" onClick={() => navigate("/battle")}>Join Battle</GameButton>
           </GameCard>
 
           {/* Quick actions */}
@@ -144,19 +148,25 @@ export default function Dashboard() {
           <GameCard hover={false}>
             <div className="flex items-center gap-3 mb-4">
               <Shield className="w-5 h-5 text-gold" />
-              <h3 className="font-cinzel font-semibold text-foreground">Inventory</h3>
+              <h3 className="font-cinzel font-semibold text-foreground">Inventory ({inventory.length})</h3>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-              {inventory.map((item) => (
-                <div key={item.name} className="bg-muted rounded-md p-3 border border-border hover:border-gold/30 transition-colors">
-                  <div className="font-crimson text-sm text-foreground">{item.name}</div>
-                  <div className="flex justify-between mt-1">
-                    <span className={`text-xs ${rarityColor[item.rarity]}`}>{item.rarity}</span>
-                    <span className="text-xs text-muted-foreground">x{item.qty}</span>
+            {inventory.length === 0 ? (
+              <p className="text-muted-foreground text-sm font-crimson text-center py-4">
+                No items yet. Win battles to earn loot! ⚔️
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                {inventory.map((item) => (
+                  <div key={item.id} className="bg-muted rounded-md p-3 border border-border hover:border-gold/30 transition-colors">
+                    <div className="font-crimson text-sm text-foreground">{item.name}</div>
+                    <div className="flex justify-between mt-1">
+                      <span className={`text-xs ${rarityColor[item.rarity]}`}>{item.rarity}</span>
+                      <span className="text-xs text-muted-foreground">x{item.qty}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </GameCard>
         </motion.div>
       </div>
