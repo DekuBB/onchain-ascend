@@ -1,4 +1,4 @@
-// Web Audio API SFX system for Crypto Realm
+// Web Audio API SFX + Music system for Crypto Realm
 
 const audioCtx = () => {
   if (!(window as any).__crAudioCtx) {
@@ -69,3 +69,120 @@ export const SFX = {
     playTone(1000, 0.05, "square", 0.05);
   },
 };
+
+// ── Ambient Music System ──
+
+interface MusicState {
+  oscillators: OscillatorNode[];
+  gains: GainNode[];
+  interval: ReturnType<typeof setInterval> | null;
+  active: boolean;
+}
+
+const musicState: Record<string, MusicState> = {};
+
+function stopMusic(key: string) {
+  const state = musicState[key];
+  if (!state) return;
+  state.active = false;
+  if (state.interval) clearInterval(state.interval);
+  state.gains.forEach((g) => {
+    try { g.gain.exponentialRampToValueAtTime(0.001, audioCtx().currentTime + 0.5); } catch {}
+  });
+  setTimeout(() => {
+    state.oscillators.forEach((o) => { try { o.stop(); } catch {} });
+    state.oscillators = [];
+    state.gains = [];
+  }, 600);
+  delete musicState[key];
+}
+
+export function stopAllMusic() {
+  Object.keys(musicState).forEach(stopMusic);
+}
+
+export function playAmbientMusic() {
+  if (musicState["ambient"]?.active) return;
+  stopMusic("battle");
+
+  const ctx = audioCtx();
+  const state: MusicState = { oscillators: [], gains: [], interval: null, active: true };
+  musicState["ambient"] = state;
+
+  // Drone pad
+  const droneFreqs = [65.41, 98.0, 130.81]; // C2, G2, C3
+  droneFreqs.forEach((freq) => {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    g.gain.value = 0.0;
+    g.gain.linearRampToValueAtTime(0.025, ctx.currentTime + 2);
+    osc.connect(g).connect(ctx.destination);
+    osc.start();
+    state.oscillators.push(osc);
+    state.gains.push(g);
+  });
+
+  // Melodic arpeggios
+  const melodyNotes = [261.63, 329.63, 392.0, 523.25, 392.0, 329.63, 293.66, 349.23, 440.0, 523.25];
+  let noteIdx = 0;
+
+  state.interval = setInterval(() => {
+    if (!state.active) return;
+    const freq = melodyNotes[noteIdx % melodyNotes.length];
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(0.04, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.8);
+    osc.connect(g).connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 2);
+    noteIdx++;
+  }, 2000);
+}
+
+export function playBattleMusic() {
+  if (musicState["battle"]?.active) return;
+  stopMusic("ambient");
+
+  const ctx = audioCtx();
+  const state: MusicState = { oscillators: [], gains: [], interval: null, active: true };
+  musicState["battle"] = state;
+
+  // Intense low drone
+  const droneFreqs = [55.0, 82.41]; // A1, E2
+  droneFreqs.forEach((freq) => {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = "sawtooth";
+    osc.frequency.value = freq;
+    g.gain.value = 0.0;
+    g.gain.linearRampToValueAtTime(0.03, ctx.currentTime + 0.5);
+    osc.connect(g).connect(ctx.destination);
+    osc.start();
+    state.oscillators.push(osc);
+    state.gains.push(g);
+  });
+
+  // Rhythmic pulse
+  const battleNotes = [110, 146.83, 110, 164.81, 130.81, 174.61, 130.81, 146.83];
+  let noteIdx = 0;
+
+  state.interval = setInterval(() => {
+    if (!state.active) return;
+    const freq = battleNotes[noteIdx % battleNotes.length];
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = "square";
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(0.06, ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+    osc.connect(g).connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.4);
+    noteIdx++;
+  }, 400);
+}

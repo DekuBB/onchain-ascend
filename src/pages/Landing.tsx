@@ -1,8 +1,10 @@
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Swords, Shield, Coins, Users, Map, Zap } from "lucide-react";
 import { GameButton } from "@/components/GameButton";
 import { GameCard } from "@/components/GameCard";
+import { playAmbientMusic, stopAllMusic } from "@/lib/audio";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const features = [
@@ -16,6 +18,12 @@ const features = [
 
 export default function Landing() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    playAmbientMusic();
+    return () => { stopAllMusic(); };
+  }, []);
+
 
   return (
     <div className="min-h-screen bg-background">

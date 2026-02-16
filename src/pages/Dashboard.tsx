@@ -125,7 +125,7 @@ export default function Dashboard() {
               {[
                 { icon: Swords, label: "PvE Battle", action: () => navigate("/battle") },
                 { icon: Map, label: "World Map", action: () => navigate("/map") },
-                { icon: Users, label: "Guild", action: () => {} },
+                { icon: Users, label: "Guild", action: () => navigate("/guild") },
                 { icon: Trophy, label: "Rankings", action: () => {} },
               ].map((a) => (
                 <motion.button
