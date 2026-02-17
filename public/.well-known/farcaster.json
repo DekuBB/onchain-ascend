@@ -6,11 +6,14 @@
   },
   "frame": {
     "version": "1",
-    "name": "Example Frame",
+    "name": "Farcaster Albion Online",
     "iconUrl": "https://onchain-ascend.vercel.app/icon.png",
     "homeUrl": "https://onchain-ascend.vercel.app",
+    "description": "Albion On-Chain MMO RPG • Built on Base",
     "imageUrl": "https://onchain-ascend.vercel.app/image.png",
     "buttonTitle": "Check this out",
+    "primaryCategory": "utility",
+    "tags": ["onchain", "wallet", "utility"],
     "splashImageUrl": "https://onchain-ascend.vercel.app/splash.png",
     "splashBackgroundColor": "#eeccff",
     "webhookUrl": "https://onchain-ascend.vercel.app/api/webhook"
