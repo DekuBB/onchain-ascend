@@ -12,6 +12,9 @@ import WorldMap from "./pages/WorldMap";
 import Dashboard from "./pages/Dashboard";
 import Battle from "./pages/Battle";
 import GuildPage from "./pages/GuildPage";
+import CraftingPage from "./pages/CraftingPage";
+import PvPArena from "./pages/PvPArena";
+import SeasonsPage from "./pages/SeasonsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +32,9 @@ const AppContent = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/battle" element={<Battle />} />
         <Route path="/guild" element={<GuildPage />} />
+        <Route path="/crafting" element={<CraftingPage />} />
+        <Route path="/pvp" element={<PvPArena />} />
+        <Route path="/seasons" element={<SeasonsPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
