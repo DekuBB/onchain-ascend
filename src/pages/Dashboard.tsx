@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Coins, Swords, Shield, Map, Users, Trophy, ArrowLeft, Flame, Star, Hammer, Zap } from "lucide-react";
+import { Coins, Swords, Shield, Map, Users, Trophy, ArrowLeft, Flame, Star, Hammer, Zap, ScrollText, Store, Award } from "lucide-react";
 import { GameButton } from "@/components/GameButton";
 import { GameCard } from "@/components/GameCard";
 import { StatBar } from "@/components/StatBar";
@@ -121,13 +121,16 @@ export default function Dashboard() {
           {/* Quick actions */}
           <GameCard hover={false} className="lg:col-span-2">
             <h3 className="font-cinzel font-semibold text-foreground mb-4">Quick Actions</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
               {[
                 { icon: Swords, label: "PvE Battle", action: () => navigate("/battle") },
                 { icon: Zap, label: "PvP Arena", action: () => navigate("/pvp") },
                 { icon: Map, label: "World Map", action: () => navigate("/map") },
                 { icon: Users, label: "Guild", action: () => navigate("/guild") },
                 { icon: Hammer, label: "Crafting", action: () => navigate("/crafting") },
+                { icon: Store, label: "Market", action: () => navigate("/marketplace") },
+                { icon: ScrollText, label: "Quests", action: () => navigate("/quests") },
+                { icon: Award, label: "Achieve.", action: () => navigate("/achievements") },
                 { icon: Trophy, label: "Rankings", action: () => navigate("/seasons") },
               ].map((a) => (
                 <motion.button

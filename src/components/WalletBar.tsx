@@ -6,7 +6,7 @@ export function WalletBar() {
   const { wallet, farcasterUser, connectWallet, disconnectWallet, loginFarcaster, logoutFarcaster } = useGame();
 
   return (
-    <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+    <div className="fixed top-4 right-4 z-50 flex items-center gap-2 pointer-events-auto">
       {farcasterUser ? (
         <div className="flex items-center gap-2 bg-secondary/90 backdrop-blur border border-border rounded-md px-3 py-2">
           <User className="w-4 h-4 text-arcane" />

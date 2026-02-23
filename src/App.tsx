@@ -15,6 +15,9 @@ import GuildPage from "./pages/GuildPage";
 import CraftingPage from "./pages/CraftingPage";
 import PvPArena from "./pages/PvPArena";
 import SeasonsPage from "./pages/SeasonsPage";
+import AchievementsPage from "./pages/AchievementsPage";
+import MarketplacePage from "./pages/MarketplacePage";
+import QuestsPage from "./pages/QuestsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +38,9 @@ const AppContent = () => {
         <Route path="/crafting" element={<CraftingPage />} />
         <Route path="/pvp" element={<PvPArena />} />
         <Route path="/seasons" element={<SeasonsPage />} />
+        <Route path="/achievements" element={<AchievementsPage />} />
+        <Route path="/marketplace" element={<MarketplacePage />} />
+        <Route path="/quests" element={<QuestsPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

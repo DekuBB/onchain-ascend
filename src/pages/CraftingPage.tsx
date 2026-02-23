@@ -95,7 +95,7 @@ const rarityBorder: Record<string, string> = {
 
 export default function CraftingPage() {
   const navigate = useNavigate();
-  const { character, inventory, addItem, removeItems } = useGame();
+  const { character, inventory, addItem, removeItems, recordCraft } = useGame();
   const [crafting, setCrafting] = useState<string | null>(null);
   const [justCrafted, setJustCrafted] = useState<string | null>(null);
 
@@ -129,6 +129,7 @@ export default function CraftingPage() {
       removeItems(recipe.materials);
       // Add result
       addItem({ ...recipe.result, qty: recipe.resultQty });
+      recordCraft();
       SFX.loot();
       setCrafting(null);
       setJustCrafted(recipe.id);
