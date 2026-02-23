@@ -33,7 +33,7 @@ const wagerOptions = [50, 100, 250, 500];
 
 export default function PvPArena() {
   const navigate = useNavigate();
-  const { character, realmTokens, addTokens, addXP } = useGame();
+  const { character, realmTokens, addTokens, addXP, recordPvPWin } = useGame();
   const [phase, setPhase] = useState<Phase>("lobby");
   const [selectedOpponent, setSelectedOpponent] = useState<Opponent | null>(null);
   const [wager, setWager] = useState(0);
@@ -94,6 +94,7 @@ export default function PvPArena() {
       const xp = Math.floor(selectedOpponent.level * 15 + Math.random() * 20);
       addTokens(winnings);
       addXP(xp);
+      recordPvPWin();
       addLog(`🏆 Victory! Won ${winnings} $REALM, +${xp} XP`);
       setPhase("victory");
       return;

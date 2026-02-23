@@ -73,7 +73,7 @@ const rarityColor: Record<string, string> = {
 
 export default function Battle() {
   const navigate = useNavigate();
-  const { character, addTokens, addXP, addItem } = useGame();
+  const { character, addTokens, addXP, addItem, recordBattleWin } = useGame();
   const [phase, setPhase] = useState<BattlePhase>("select");
   const [enemy, setEnemy] = useState<Combatant | null>(null);
   const [playerHp, setPlayerHp] = useState(100);
@@ -133,6 +133,7 @@ export default function Battle() {
       setLootDrops(drops);
       addTokens(rew);
       addXP(xp);
+      recordBattleWin();
       drops.forEach((d) => addItem(d));
       addLog(`🏆 ${enemy.name} defeated! +${rew} $REALM, +${xp} XP`);
       if (drops.length > 0) {
