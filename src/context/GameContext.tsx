@@ -44,6 +44,7 @@ interface GameState {
   addTokens: (amount: number) => void;
   addXP: (amount: number) => void;
   addItem: (item: InventoryItem) => void;
+  removeItems: (items: { itemId: string; qty: number }[]) => void;
   createGuild: (name: string, tag: string) => void;
   joinGuild: (guildId: string) => void;
   leaveGuild: () => void;
@@ -125,6 +126,16 @@ export function GameProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const removeItems = (items: { itemId: string; qty: number }[]) => {
+    setInventory((prev) => {
+      let updated = [...prev];
+      items.forEach(({ itemId, qty }) => {
+        updated = updated.map((i) => (i.id === itemId ? { ...i, qty: i.qty - qty } : i)).filter((i) => i.qty > 0);
+      });
+      return updated;
+    });
+  };
+
   const createGuild = (name: string, tag: string) => {
     if (!character) return;
     const newGuild: Guild = {
@@ -169,7 +180,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       value={{
         wallet, farcasterUser, character, realmTokens, inventory, guild, availableGuilds,
         connectWallet, disconnectWallet, loginFarcaster, logoutFarcaster,
-        createCharacter, addTokens, addXP, addItem,
+        createCharacter, addTokens, addXP, addItem, removeItems,
         createGuild, joinGuild, leaveGuild, depositToVault,
       }}
     >
