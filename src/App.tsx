@@ -44,6 +44,9 @@ const AppContent = () => {
         <Route path="/achievements" element={<AchievementsPage />} />
         <Route path="/marketplace" element={<MarketplacePage />} />
         <Route path="/quests" element={<QuestsPage />} />
+        <Route path="/dungeon" element={<DungeonPage />} />
+        <Route path="/pets" element={<PetsPage />} />
+        <Route path="/chat" element={<ChatPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

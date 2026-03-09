@@ -130,6 +130,9 @@ export default function Dashboard() {
                 { icon: Hammer, label: "Crafting", action: () => navigate("/crafting") },
                 { icon: Store, label: "Market", action: () => navigate("/marketplace") },
                 { icon: ScrollText, label: "Quests", action: () => navigate("/quests") },
+                { icon: Skull, label: "Dungeon", action: () => navigate("/dungeon") },
+                { icon: Heart, label: "Pets", action: () => navigate("/pets") },
+                { icon: MessageCircle, label: "Chat", action: () => navigate("/chat") },
                 { icon: Award, label: "Achieve.", action: () => navigate("/achievements") },
                 { icon: Trophy, label: "Rankings", action: () => navigate("/seasons") },
               ].map((a) => (
