@@ -18,6 +18,9 @@ import SeasonsPage from "./pages/SeasonsPage";
 import AchievementsPage from "./pages/AchievementsPage";
 import MarketplacePage from "./pages/MarketplacePage";
 import QuestsPage from "./pages/QuestsPage";
+import DungeonPage from "./pages/DungeonPage";
+import PetsPage from "./pages/PetsPage";
+import ChatPage from "./pages/ChatPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
