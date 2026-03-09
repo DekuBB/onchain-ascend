@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Coins, Swords, Shield, Map, Users, Trophy, ArrowLeft, Flame, Star, Hammer, Zap, ScrollText, Store, Award } from "lucide-react";
+import { Coins, Swords, Shield, Map, Users, Trophy, ArrowLeft, Flame, Star, Hammer, Zap, ScrollText, Store, Award, Skull, Heart, MessageCircle } from "lucide-react";
 import { GameButton } from "@/components/GameButton";
 import { GameCard } from "@/components/GameCard";
 import { StatBar } from "@/components/StatBar";
