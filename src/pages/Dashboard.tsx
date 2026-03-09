@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { Coins, Swords, Shield, Map, Users, Trophy, ArrowLeft, Flame, Star, Hammer, Zap, ScrollText, Store, Award } from "lucide-react";
+import { Coins, Swords, Shield, Map, Users, Trophy, ArrowLeft, Flame, Star, Hammer, Zap, ScrollText, Store, Award, Skull, Heart, MessageCircle } from "lucide-react";
 import { GameButton } from "@/components/GameButton";
 import { GameCard } from "@/components/GameCard";
 import { StatBar } from "@/components/StatBar";
@@ -130,6 +130,9 @@ export default function Dashboard() {
                 { icon: Hammer, label: "Crafting", action: () => navigate("/crafting") },
                 { icon: Store, label: "Market", action: () => navigate("/marketplace") },
                 { icon: ScrollText, label: "Quests", action: () => navigate("/quests") },
+                { icon: Skull, label: "Dungeon", action: () => navigate("/dungeon") },
+                { icon: Heart, label: "Pets", action: () => navigate("/pets") },
+                { icon: MessageCircle, label: "Chat", action: () => navigate("/chat") },
                 { icon: Award, label: "Achieve.", action: () => navigate("/achievements") },
                 { icon: Trophy, label: "Rankings", action: () => navigate("/seasons") },
               ].map((a) => (
